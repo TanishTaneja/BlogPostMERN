@@ -11,7 +11,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-      <Navbar />
+      <Navbar isLoggedIn={false} />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/post" element={<BlogPostForm isEdit={false} />} />

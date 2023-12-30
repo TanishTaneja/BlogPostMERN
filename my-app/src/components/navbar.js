@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({isLoggedIn}) => {
   const [style, setStyle] = useState(false);
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div className="container">
-          <a className="navbar-brand" href="index.html">Blogs</a>
+          <Link to="/" className="navbar-brand" >Blogs</Link>
           <button onClick={() => {
             setStyle(!style);
           }} className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +17,7 @@ const Navbar = () => {
           <div id="navbarResponsive2">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/">Home</a>
+                <Link to="/" className="nav-link">Home</Link>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/about">About</a>
@@ -24,6 +25,20 @@ const Navbar = () => {
               <li className="nav-item">
                 <a className="nav-link" href="/contact">Contact</a>
               </li>
+              {isLoggedIn?(
+                <li className="nav-item">
+                  <a className="nav-link">LogOut</a>
+                </li>
+              ):(
+                <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                <Link to="login" className="nav-link">LogIn</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="register" className="nav-link">Register</Link>
+                </li>
+                </ul>
+              )}
             </ul>
           </div>
           <div style={style ? {

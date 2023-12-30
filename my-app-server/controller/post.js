@@ -1,4 +1,4 @@
-let BlogPost=require("../model/blogpost")
+const{ BlogPost, UserDb}=require("../model/blogpost")
 
 module.exports.getallpost=async (req,res)=>{
     let data=await BlogPost.find();
@@ -75,5 +75,71 @@ module.exports.patcheditpost=async(req,res)=>{
     }
     catch(err){
         console.log(err);
+    }
+}
+
+const users=[];
+module.exports.getLogin=(req,res)=>{
+    res.render('login');
+}
+
+module.exports.postLogin=(req,res)=>{
+    // const{username,password}=req.body;
+    
+
+    // if(user){
+    //     req.session.userId=user.id;
+    //     res.redirect('/');
+    // }else{
+    //     res.redirect('/login');
+    // }
+}
+
+module.exports.getRegister=(req,res)=>{
+    res.render('register');
+}
+
+module.exports.postRegister = async (req, res) => {
+    const { username, email, password } = req.body;
+
+    try {
+        const oldUser = await UserDb.findOne({ email });
+
+        if (!oldUser) {
+            const newUser = new UserDb({
+                username,
+                email,
+                password,
+            });
+
+            await newUser.save();
+            res.status(201).json({
+                message: "New user added",
+            });
+        } else {
+            res.redirect("/login")
+        }
+    } catch (error) {
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+};
+
+module.exports.logout=(req,res)=>{
+    req.session.destroy(err=>{
+        res.redirect('/');
+    })
+}
+
+module.exports.getHome=(req,res)=>{
+    res.send("welcome to our website");
+}
+
+module.exports.requireLogin=(req,res,next)=>{
+    if(!req.session.userId){
+        res.redirect("/login");
+    }else{
+        next();
     }
 }
