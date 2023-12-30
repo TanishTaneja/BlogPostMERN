@@ -1,39 +1,39 @@
 const mongoose = require("mongoose");
 
-const blogPostSchema=new mongoose.Schema({
-    title:{
-        type:String
+const blogPostSchema = new mongoose.Schema({
+    title: {
+        type: String
     },
-    subtitle:{
-        type:String
+    subtitle: {
+        type: String
     },
-    postContent:{
-        type:String
+    postContent: {
+        type: String
     },
-    imgLink:{
-        type:String
+    imgLink: {
+        type: String
     },
-    user:[{type:mongoose.Types.ObjectId,ref:'UserDb'}]
-    
+    user: [{ type: mongoose.Types.ObjectId, ref: 'UserDb' }]
+
 })
 
-const userSchema=new mongoose.Schema({
-    username:{
-        type:String
+const userSchema = new mongoose.Schema({
+    username: {
+        type: String
     },
-    password:{
-        type:String
+    password: {
+        type: String
     },
-    email:{
-        type:String
+    email: {
+        type: String
     },
-    posts:[{type:mongoose.Types.ObjectId,ref:'BlogPost'}]
+    posts: [{ type: mongoose.Types.ObjectId, ref: 'BlogPost' }]
 })
 
 const BlogPost = mongoose.model('BlogPost', blogPostSchema);
-const UserDb=mongoose.model('UserDb',userSchema);
+const UserDb = mongoose.model('UserDb', userSchema);
 
-module.exports={
+module.exports = {
     BlogPost,
     UserDb
 }
