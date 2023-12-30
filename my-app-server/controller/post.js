@@ -117,7 +117,10 @@ module.exports.postRegister = async (req, res) => {
                 message: "New user added",
             });
         } else {
-            res.redirect("/login")
+            res.status(400).json({
+                login: true,
+                message: "A user with this email already exists",
+            });
         }
     } catch (error) {
         res.status(500).json({
