@@ -13,10 +13,8 @@ const blogPostSchema=new mongoose.Schema({
     imgLink:{
         type:String
     },
-    user:[{type:mongoose.Types.ObjectId,ref:'UserDb'}]
-    
+    user:[{type:mongoose.Types.ObjectId,ref:'UserDb'}]  
 })
-
 const userSchema=new mongoose.Schema({
     username:{
         type:String

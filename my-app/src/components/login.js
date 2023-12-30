@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 function Login ({ isRegistered }) {
     let navigate=useNavigate();
-
     const handleFormSubmit = (values) => {
         const userData = {
-          username: values.username,
-          email:values.email,
-          password: values.password,
+            username: values.username,
+            email:values.email,
+            password: values.password,
         };
         if(!isRegistered){
             axios.post("http://localhost:5000/post/register",userData)
@@ -31,7 +30,7 @@ function Login ({ isRegistered }) {
                 console.log(err)
             })
         }
-    }
+    }   
     return (
     <div>
         <header class="masthead" style={{
@@ -94,7 +93,6 @@ function Login ({ isRegistered }) {
             </div>
         </div>
     </div>
-    
   )
 }
 export default Login;
