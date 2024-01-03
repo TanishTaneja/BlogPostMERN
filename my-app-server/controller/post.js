@@ -1,5 +1,5 @@
 const{ BlogPost, UserDb}=require("../model/blogpost")
-
+const bcrypt=require("bcrypt")
 module.exports.getallpost=async (req,res)=>{
     let data=await BlogPost.find();
     res.status(201).json(data)
@@ -78,25 +78,27 @@ module.exports.patcheditpost=async(req,res)=>{
     }
 }
 
-const users=[];
-module.exports.getLogin=(req,res)=>{
-    res.render('login');
-}
-
-module.exports.postLogin=(req,res)=>{
-    // const{username,password}=req.body;
-    
-
-    // if(user){
-    //     req.session.userId=user.id;
-    //     res.redirect('/');
-    // }else{
-    //     res.redirect('/login');
-    // }
-}
-
-module.exports.getRegister=(req,res)=>{
-    res.render('register');
+module.exports.postLogin=async (req,res)=>{
+    const{email,password}=req.body;
+    let user=await UserDb.findOne({ email });
+    if(user){
+        let passwordMatch=bcrypt.compareSync(password, user.password);
+        if(passwordMatch){
+            req.session.userId=user.id;
+            res.status(200).json({
+                login:true
+            })
+        }
+        else{
+            res.status(403).json({  
+                invalidpassword:true
+            })
+        }
+    }else{
+        res.status(403).json({
+            notregistered:true
+        })
+    }
 }
 
 module.exports.postRegister = async (req, res) => {
@@ -106,10 +108,11 @@ module.exports.postRegister = async (req, res) => {
         const oldUser = await UserDb.findOne({ email });
 
         if (!oldUser) {
+            const hashed_password=await bcrypt.hash(password,10);
             const newUser = new UserDb({
                 username,
                 email,
-                password,
+                password: hashed_password,
             });
 
             await newUser.save();
@@ -135,9 +138,6 @@ module.exports.logout=(req,res)=>{
     })
 }
 
-module.exports.getHome=(req,res)=>{
-    res.send("welcome to our website");
-}
 
 module.exports.requireLogin=(req,res,next)=>{
     if(!req.session.userId){

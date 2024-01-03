@@ -26,9 +26,18 @@ function Login ({ isRegistered }) {
         } else {
             axios.post("http://localhost:5000/post/login", userData)
                 .then((res) => {
-                    navigate("/");
+                    if(res.data.login){
+                        console.log(res.data);
+                        navigate("/");
+                    }
                 })
                 .catch((err) => {
+                    if(err.response && err.response.data.invalidpassword){
+                        toast.error("Wrong password Try again");
+                    }
+                    if(err.response && err.response.data.notregistered){
+                        toast.error("Email does not exists please register");
+                    }
                     console.log(err)
                 })
         }
@@ -68,12 +77,16 @@ function Login ({ isRegistered }) {
                     Password: ''
                 }} onSubmit={handleFormSubmit}>
                     <Form>
-                    <label htmlFor="username">Name</label>
-                    <Field
-                        type="text"
-                        name="username"
-                        className="form-control"
-                    />
+                    {!isRegistered && (
+                        <>
+                            <label htmlFor="username">Name</label>
+                            <Field
+                            type="text"
+                            name="username"
+                            className="form-control"
+                            />
+                        </>
+                        )}
                     <label htmlFor="email">Email</label>
                     <Field
                         type="text"
@@ -95,7 +108,7 @@ function Login ({ isRegistered }) {
             </div>
         </div>
     </div>
-    
   )
 }
+
 export default Login;

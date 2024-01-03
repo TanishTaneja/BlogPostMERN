@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Main = () => {
   const [allPosts, setAllPosts] = useState([]);
-
+  
   const getPostsFromDb = () => {
     axios.get("http://localhost:5000/post")
       .then((res) => {
@@ -14,10 +14,7 @@ const Main = () => {
   };
   useEffect(() => {
     getPostsFromDb();
-  }, []);
-
-
-  
+  }, []);         
   const deletePost=(postId)=>{
     axios.delete(`http://localhost:5000/post/${postId}`)
     .then((res)=>{
@@ -40,7 +37,6 @@ const Main = () => {
           </div>
         </div>
       </header>
-      
       <div className="container">
         <div className="row">
           <div className="col-lg-8 col-md-10 mx-auto">
@@ -59,6 +55,7 @@ const Main = () => {
           </div>
         </div>
       </div>
+
       <div className="container">
         <div className="row">
           <div className="col-lg-8 col-md-10 mx-auto">
