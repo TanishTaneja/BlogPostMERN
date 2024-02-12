@@ -10,21 +10,32 @@ const blogPostSchema = new mongoose.Schema({
     postContent: {
         type: String
     },
-    imgLink: {
+    imageLink: {
         type: String
     },
-    user:[{type:mongoose.Types.ObjectId,ref:'UserDb'}]
-    
+    user: { type: mongoose.Types.ObjectId, ref: 'UserDb' }
+
 })
 
-const userSchema=new mongoose.Schema({
-    username:{
-        type:String
+const userSchema = new mongoose.Schema({
+    username: {
+        type: String
     },
     password: {
         type: String
     },
     email: {
+        type: String
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    verificationCode: {
         type: String
     },
     posts: [{ type: mongoose.Types.ObjectId, ref: 'BlogPost' }]

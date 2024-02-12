@@ -1,8 +1,30 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-const Navbar = ({isLoggedIn}) => {
+const Navbar = ({isLoggedIn,setAuth}) => {
   const [style, setStyle] = useState(false);
+  let navigate=useNavigate();
+  const handleLogout = async() => {
+    try{
+      await axios.get('http://localhost:5000/post/logout')
+      .then((res)=>{
+        if(res.data.logout){
+          navigate("/")
+          setAuth(res.data.logout)
+        }
+      })
+      .catch((err)=>{
+        console.log("Session was not destroyed")
+      })
+      console.log('User logged out successfully.');
+      localStorage.removeItem("auth");
+      setAuth(false);
+    }
+    catch(er){
+      console.log(er)
+    }
+  };
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
@@ -27,7 +49,7 @@ const Navbar = ({isLoggedIn}) => {
               </li>
               {isLoggedIn?(
                 <li className="nav-item">
-                  <a className="nav-link">LogOut</a>
+                  <a onClick={handleLogout} className="nav-link">LogOut</a>
                 </li>
               ):(
                 <ul className="navbar-nav ml-auto">

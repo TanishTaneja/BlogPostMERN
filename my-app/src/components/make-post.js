@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import axios from "axios";
 import { useNavigate, useParams } from 'react-router-dom';
+import axiosInstance from '../axiosInstance';
 
 function BlogPostForm({ isEdit }) {
 
@@ -16,16 +16,16 @@ function BlogPostForm({ isEdit }) {
       postContent: values.postContent,
     };
     if (!isEdit) {
-      axios.post("http://localhost:5000/post", postData)
-      .then((res) => {
-        console.log(res.data)
-        navigate("/");
-      })
-      .catch((err) => { console.log(err) })
+      axiosInstance.post("/post", postData)
+        .then((res) => {
+          console.log(res.data)
+          navigate("/");
+        })
+        .catch((err) => { console.log(err) })
     } else {
       let postId = params.postId;
-      axios.patch(`http://localhost:5000/post/${postId}`, postData).then((res) => {
-        
+      axiosInstance.patch(`/post/${postId}`, postData).then((res) => {
+
         console.log(res.data)
         navigate("/");
       })
@@ -54,7 +54,6 @@ function BlogPostForm({ isEdit }) {
           </div>
         </div>
       </header>
-
       <div className="container">
         <div className="row">
           <div className="col-lg-8 col-md-10 mx-auto">

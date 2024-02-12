@@ -1,16 +1,14 @@
-let express=require("express");
-let router=express.Router();
-let{getallpost,getonepost,postaddpost,deleteonepost,patcheditpost,postLogin,postRegister,requireLogin,logout}=require("../controller/post")
+let express = require("express");
+let router = express.Router();
+let { getallpost, getonepost, postaddpost, deleteonepost, patcheditpost } = require("../controller/post");
+const authenticateToken = require("../middleware/authenticateToken");
 
+router.use(authenticateToken);
 router
-    .route("/")
-        .get(requireLogin,getallpost)
-        .post(requireLogin,postaddpost);
-router.get("/:postId",getonepost);
-router.delete("/:postId",deleteonepost);
-router.patch("/:postId",patcheditpost);
-router.post("/login",postLogin);
-router.post("/register",postRegister);
-router.get("/logout",logout);
+    .get("/", getallpost)
+    .post("/", postaddpost);
+router.get("/:postId", getonepost);
+router.delete("/:postId", deleteonepost);
+router.patch("/:postId", patcheditpost);
 
-module.exports=router
+module.exports = router
